@@ -5,8 +5,10 @@ $app->post('auth/facebook', 'AuthController@facebook');
 $app->group(['prefix' => 'api', 'middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function () use ($app) {
     $app->get('events', 'EventController@index');
     $app->post('events', 'EventController@store');
+    $app->get('events/{id}', 'EventController@get');
     $app->put('events/{id}', 'EventController@update');
-    //$app->delete('events/{id}', 'EventController@destroy');
+    $app->patch('events/{id}', 'EventController@highlight');
+    $app->delete('events/{id}', 'EventController@destroy');
     $app->put('events/{id}/likes', 'EventController@like');
 
     $app->get('sports', 'SportController@index');
@@ -20,5 +22,5 @@ $app->group(['prefix' => 'api', 'middleware' => 'auth', 'namespace' => 'App\Http
     //$app->delete('events/{id}/comments', 'CommentController@destroy');
 
     //$app->get('me/subscriptions/events', 'MeController@subscriptionsEvents');
-    //$app->get('me', 'MeController@get');
+    $app->get('me', 'MeController@get');
 });

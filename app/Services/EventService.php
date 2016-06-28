@@ -33,7 +33,7 @@ class EventService
      */
     public function get($id)
     {
-        return $this->event->findOrFail($id);
+        return $this->event->with('sport')->where('id', $id)->first();
     }
 
     /**
@@ -43,7 +43,8 @@ class EventService
      */
     public function getList()
     {
-        return $this->event->with('sport', 'user', 'comments', 'comments.user', 'likes')->get();
+        return $this->event->with('sport', 'user', 'comments', 'comments.user', 'likes')
+            ->orderBy('highlight', 'desc')->orderBy('date', 'asc')->get();
     }
 
     /**
@@ -130,5 +131,26 @@ class EventService
         }
 
         return $event->likes()->get();
+    }
+
+    public function delete($id)
+    {
+        $event = $this->event->findOrFail($id);
+
+        $event->comments()->delete();
+        $event->likes()->detach();
+
+        $event->delete();
+    }
+
+    public function highlight($id)
+    {
+        $event = $this->event->findOrFail($id);
+        if ($event->highlight == 1) {
+            $event->highlight = 0;
+        } else {
+            $event->highlight = 1;
+        }
+        $event->save();
     }
 }

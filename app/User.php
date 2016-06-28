@@ -27,7 +27,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password', 'is_admin', 'email', 'created_at', 'updated_at'
+        'password', 'email', 'created_at', 'updated_at'
     ];
 
     public function events()

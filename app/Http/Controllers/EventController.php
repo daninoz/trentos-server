@@ -40,6 +40,18 @@ class EventController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get($id)
+    {
+        $response = $this->eventService->get($id);
+
+        return response()->json($response);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -100,6 +112,15 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        // TODO
+        $this->eventService->delete($id);
+
+        return response()->json();
+    }
+
+    public function highlight($id)
+    {
+        $this->eventService->highlight($id);
+
+        return response()->json();
     }
 }
