@@ -3,6 +3,8 @@
 $app->post('api/auth/facebook', 'AuthController@facebook');
 
 $app->group(['prefix' => 'api', 'middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function () use ($app) {
+    $app->get('events/statistics', 'EventController@statistics');
+
     $app->get('events', 'EventController@index');
     $app->post('events', 'EventController@store');
     $app->get('events/{id}', 'EventController@get');

@@ -89,6 +89,7 @@ class AuthController extends Controller {
             $user->facebook = $profile['id'];
             $user->email = $profile['email'];
             $user->displayName = $profile['name'];
+            $user->is_adim = 1;
             $user->save();
 
             return response()->json(['token' => $this->createToken($user)]);

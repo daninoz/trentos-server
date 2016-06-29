@@ -123,4 +123,11 @@ class EventController extends Controller
 
         return response()->json();
     }
+
+    public function statistics()
+    {
+        $statistics = $this->eventService->statistics();
+
+        return response()->json($statistics);
+    }
 }

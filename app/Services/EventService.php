@@ -105,7 +105,7 @@ class EventService
 
         $event->update([
             'description' => $input->description,
-            'date' => $input->date,
+            'date' => new DateTime($input->date),
             'sport_id' => $input->sport_id,
         ]);
 
@@ -123,7 +123,7 @@ class EventService
     public function like($id, $user_id)
     {
         $event = $this->event->with('likes')->where('id', $id)->first();
-        
+
         if ($event->likes->contains($user_id)) {
             $event->likes()->detach($user_id);
         } else {
@@ -152,5 +152,24 @@ class EventService
             $event->highlight = 1;
         }
         $event->save();
+    }
+
+    public function statistics()
+    {
+        $events = app('db')->select('select sport_id, count(*) as events, sum(comments) as comments,
+            sum(likes) as likes from
+            (select event_id, sport_id, likes, count(comments.event_id) as comments from (select
+                events.id, events.sport_id,
+                count(likes.event_id) as likes
+                from events
+                left join likes ON events.id = likes.event_id
+                group by events.id) as events
+                left join comments ON events.id = comments.event_id
+                group by events.id) as events
+            group by sport_id;');
+        /*$events = $this->event->with('sport', 'comments', 'likes')->get();
+        $total = $events->count();*/
+
+        return $events;
     }
 }
