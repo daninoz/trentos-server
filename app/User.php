@@ -18,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'name', 'email', 'password', 'avatar'
     ];
 
     /**
@@ -47,6 +47,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function sports()
     {
-        return $this->belongsToMany('App\Sport');
+        return $this->belongsToMany('App\Sport', 'subscriptions');
     }
 }

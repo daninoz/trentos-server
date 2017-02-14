@@ -13,9 +13,9 @@ class UsersTableSeeder extends Seeder
         //insert some dummy records
         for ($i = 0; $i < 50; $i++) {
             DB::table('users')->insert([
-                'displayName' => $faker->name,
+                'name' => $faker->name,
                 'email' => $faker->unique()->email,
-                'facebook' => $faker->isbn10(),
+                'password' => app('hash')->make('password'),
                 'is_admin' => 0,
                 'created_at' => $faker->dateTimeBetween($startDate = '-60 days',
                     $endDate = '-30 days', $timezone = date_default_timezone_get()),
