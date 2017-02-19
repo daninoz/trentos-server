@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
-//use App\Services\UserService;
+use App\Services\UserService;
 use App\User;
 
 class MeController extends Controller
@@ -18,31 +18,20 @@ class MeController extends Controller
      */
     protected $userService;
 
-    /**
-     * MeController constructor.
-     *
-     * @param UserService $accountService
-     */
-    /*public function __construct(UserService $userService)
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-    }*/
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /*public function subscriptionsEvents()
+    }
+    public function getFeed(Request $request)
     {
-        $response = $this->userService->getLoggedUser()->getSubscriptionEvents();
+        $response = $this->userService->getFeed($request['user']['sub']);
 
         return response()->json($response);
-    }*/
+    }
 
     public function get(Request $request)
     {
-        $user = User::find($request['user']['sub']);
+        $user = $this->userService->get($request['user']['sub']);
 
         return $user;
     }

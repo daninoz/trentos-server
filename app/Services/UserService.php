@@ -98,4 +98,20 @@ class UserService
 
         return ["id" => $event->id];
     }
+
+    public function get($id)
+    {
+        return $this->user->find($id);
+    }
+
+    public function getFeed($id)
+    {
+        $user = $this->get($id);
+
+        $user->load(['sports.events' => function ($q) use ( &$events ) {
+            $events = $q->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->get()->unique();
+        }]);
+
+        return $events->load('sport', 'user', 'comments', 'comments.user', 'likes');
+    }
 }

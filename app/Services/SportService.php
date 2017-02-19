@@ -119,6 +119,6 @@ class SportService
     {
         return $this->sport->findOrFail($id)->events()
             ->with('sport', 'user', 'comments', 'comments.user', 'likes')
-            ->orderBy('highlight', 'desc')->orderBy('date', 'asc')->get();
+            ->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->get();
     }
 }
