@@ -35,4 +35,15 @@ class MeController extends Controller
 
         return $user;
     }
+
+    public function updateSubscriptions(Request $request)
+    {
+        try {
+            $this->userService->validateSportsInput($request->all());
+        } catch (\Exception $e) {
+            abort(422);
+        }
+
+        return $this->userService->updateSports($request['user']['sub'], $request->all());
+    }
 }

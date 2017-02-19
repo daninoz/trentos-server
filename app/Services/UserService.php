@@ -53,6 +53,19 @@ class UserService
         }
     }
 
+    public function validateSportsInput($input)
+    {
+        $rules = [
+            'sports.*' => ['exists:sports,id']
+        ];
+
+        $validator = app('validator')->make($input, $rules);
+
+        if ($validator->fails()) {
+            throw new \Exception;
+        }
+    }
+
     /**
      * Creates a new event
      *
@@ -101,7 +114,11 @@ class UserService
 
     public function get($id)
     {
-        return $this->user->find($id);
+        $user = $this->user->find($id);
+
+        $user->load('sports');
+
+        return $user;
     }
 
     public function getFeed($id)
@@ -113,5 +130,16 @@ class UserService
         }]);
 
         return $events->load('sport', 'user', 'comments', 'comments.user', 'likes');
+    }
+
+    public function updateSports($id, $sports)
+    {
+        $user = $this->user->find($id);
+
+        $user->sports()->sync($sports['sports']);
+
+        $user->load('sports');
+
+        return $user;
     }
 }
