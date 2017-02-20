@@ -15,7 +15,7 @@ class EventsTableSeeder extends Seeder
 
         DB::table('events')->delete();
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             DB::table('events')->insert([
                 'description' => $faker->realText($maxNbChars = 500, $indexSize = 1),
                 'highlight' => 0,

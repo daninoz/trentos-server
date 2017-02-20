@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
         //delete users table records
         DB::table('users')->delete();
         //insert some dummy records
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             DB::table('users')->insert([
                 'name' => $faker->name,
                 'email' => $faker->unique()->email,
