@@ -33,6 +33,13 @@ class SportsTableSeeder extends Seeder
                 'updated_at' => $faker->dateTimeBetween($startDate = '-29 days',
                     $endDate = '-15 days', $timezone = date_default_timezone_get()),
             ],
+            [
+                'name' => 'Ciclismo de Ruta',
+                'created_at' => $faker->dateTimeBetween($startDate = '-60 days',
+                    $endDate = '-30 days', $timezone = date_default_timezone_get()),
+                'updated_at' => $faker->dateTimeBetween($startDate = '-29 days',
+                    $endDate = '-15 days', $timezone = date_default_timezone_get()),
+            ],
         ]);
     }
 }

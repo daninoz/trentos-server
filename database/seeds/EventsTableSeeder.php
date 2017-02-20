@@ -18,8 +18,6 @@ class EventsTableSeeder extends Seeder
         for ($i = 0; $i < 100; $i++) {
             DB::table('events')->insert([
                 'description' => $faker->realText($maxNbChars = 500, $indexSize = 1),
-                'date' => $faker->dateTimeBetween($startDate = '+1 day',
-                    $endDate = '+30 days', $timezone = date_default_timezone_get()),
                 'highlight' => 0,
                 'sport_id' => $faker->randomElement($sports),
                 'user_id' => $faker->randomElement($users),

@@ -13,7 +13,7 @@ class AddHighlightToEvents extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->boolean('highlight')->after('date');
+            $table->boolean('highlight')->after('description');
         });
     }
 
