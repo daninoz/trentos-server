@@ -30,6 +30,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password', 'email', 'created_at', 'updated_at'
     ];
 
+    protected $casts = [
+        'is_admin' => 'int',
+    ];
+
     public function events()
     {
         return $this->hasMany('App\Event');

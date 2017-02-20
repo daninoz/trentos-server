@@ -10,6 +10,10 @@ class Event extends Model
 
     protected $hidden = ['updated_at', 'sport_id', 'user_id'];
 
+    protected $casts = [
+        'highlight' => 'int',
+    ];
+
     public function getDates()
     {
         return ['date', 'created_at', 'updated_at'];
