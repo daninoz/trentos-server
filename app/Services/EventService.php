@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Event;
-use DateTime;
 
 class EventService
 {
@@ -60,7 +59,6 @@ class EventService
     {
         $rules = [
             'description' => ['required'],
-            'date' => ['required', 'date'],
             'sport_id' => ['required', 'exists:sports,id'],
         ];
 
@@ -80,10 +78,8 @@ class EventService
      */
     public function create($input)
     {
-        //dd($input->date);
         $event = $this->event->create([
             'description' => $input->description,
-            'date' => new DateTime($input->date),
             'sport_id' => $input->sport_id,
             'user_id' => $input->user['sub']
         ]);
@@ -105,7 +101,6 @@ class EventService
 
         $event->update([
             'description' => $input->description,
-            'date' => new DateTime($input->date),
             'sport_id' => $input->sport_id,
         ]);
 
