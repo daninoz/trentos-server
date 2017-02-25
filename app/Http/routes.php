@@ -4,12 +4,13 @@ $app->post('api/auth/login', 'AuthController@login');
 $app->post('api/auth/register', 'AuthController@register');
 $app->get('api/sports', 'SportController@index');
 
+$app->get('api/events', 'EventController@index');
+
 $app->group(['prefix' => 'api', 'middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function () use ($app) {
     $app->get('events/statistics', 'EventController@statistics');
 
     $app->get('feed', 'MeController@getFeed');
 
-    $app->get('events', 'EventController@index');
     $app->post('events', 'EventController@store');
     $app->get('events/{id}', 'EventController@get');
     $app->put('events/{id}', 'EventController@update');
