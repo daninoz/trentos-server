@@ -78,11 +78,17 @@ class EventService
      */
     public function create($input)
     {
-        $event = $this->event->create([
+        $event = [
             'description' => $input->description,
             'sport_id' => $input->sport_id,
             'user_id' => $input->user['sub']
-        ]);
+        ];
+
+        if ($input->location) {
+            $event['location'] = $input->location;
+        }
+
+        $event = $this->event->create($event);
 
         return ["id" => $event->id];
     }
