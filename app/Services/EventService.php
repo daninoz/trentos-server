@@ -105,10 +105,16 @@ class EventService
     {
         $event = $this->event->findOrFail($id);
 
-        $event->update([
+        $eventData = [
             'description' => $input->description,
             'sport_id' => $input->sport_id,
-        ]);
+        ];
+
+        if ($input->location) {
+            $eventData['location'] = $input->location;
+        }
+
+        $event->update($eventData);
 
         return ["id" => $event->id];
     }
