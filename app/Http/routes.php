@@ -6,6 +6,7 @@ $app->post('api/auth/register', 'AuthController@register');
 $app->get('api/sports', 'SportController@index');
 
 $app->get('api/events', 'EventController@index');
+$app->get('api/events?{page}', 'EventController@index');
 
 $app->group(['prefix' => 'api', 'middleware' => 'auth', 'namespace' => 'App\Http\Controllers'], function () use ($app) {
     $app->get('events/statistics', 'EventController@statistics');
@@ -20,6 +21,7 @@ $app->group(['prefix' => 'api', 'middleware' => 'auth', 'namespace' => 'App\Http
     $app->put('events/{id}/likes', 'EventController@like');
 
     $app->get('sports/{id}/events', 'SportController@events');
+    $app->get('sports/{id}/events?{page}', 'SportController@events');
 
     $app->post('events/{id}/comments', 'CommentController@store');
     $app->put('events/comments/{id}', 'CommentController@update');

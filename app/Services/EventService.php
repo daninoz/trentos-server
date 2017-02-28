@@ -43,7 +43,7 @@ class EventService
     public function getList()
     {
         return $this->event->with('sport', 'user', 'comments', 'comments.user', 'likes')
-            ->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->limit(10)->get();
+            ->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->paginate(10);
     }
 
     /**
@@ -172,5 +172,14 @@ class EventService
         $total = $events->count();*/
 
         return $events;
+    }
+
+    public function getBySports($sports)
+    {
+        return $this->event->with('sport', 'user', 'comments', 'comments.user', 'likes')
+            ->whereHas('sport', function ($q) use ($sports) {
+                $q->whereIn('id', $sports);
+            })
+            ->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->paginate(10);
     }
 }

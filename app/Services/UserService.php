@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\User;
+use App\Services\EventService;
 use DateTime;
 use Storage;
 
@@ -20,9 +21,10 @@ class UserService
      *
      * @param Event    $event
      */
-    public function __construct(User $user)
+    public function __construct(User $user, EventService $eventService)
     {
         $this->user = $user;
+        $this->event = $eventService;
     }
 
     /**
@@ -129,11 +131,9 @@ class UserService
             return [];
         }
 
-        $user->load(['sports.events' => function ($q) use ( &$events ) {
-            $events = $q->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->get()->unique();
-        }]);
+        $sports = $user->sports->pluck('id');
 
-        return $events->load('sport', 'user', 'comments', 'comments.user', 'likes');
+        return $this->event->getBySports($sports);
     }
 
     public function updateSports($id, $sports)
