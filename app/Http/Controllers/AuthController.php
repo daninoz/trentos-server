@@ -30,9 +30,6 @@ class AuthController extends Controller {
         return JWT::encode($payload, env('app.token_secret'));
     }
 
-    /**
-     * Login with Facebook.
-     */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -43,6 +40,59 @@ class AuthController extends Controller {
             abort(501);
         }
 
+        return response()->json(['token' => $this->createToken($user)]);
+    }
+
+    /**
+     * Login with Facebook.
+     */
+    public function facebook(Request $request)
+    {
+        $client = new GuzzleHttp\Client();
+        $params = [
+            'code' => $request->input('code'),
+            'client_id' => $request->input('clientId'),
+            'redirect_uri' => $request->input('redirectUri'),
+            'client_secret' => env('app.facebook_secret')
+        ];
+        // Step 1. Exchange authorization code for access token.
+        $accessTokenResponse = $client->request('GET', 'https://graph.facebook.com/v2.6/oauth/access_token', [
+            'query' => $params
+        ]);
+        $accessToken = json_decode($accessTokenResponse->getBody(), true);
+
+        // Step 2. Retrieve profile information about the current user.
+        $fields = 'id,email,first_name,last_name,link,name';
+        $profileResponse = $client->request('GET', 'https://graph.facebook.com/v2.6/me', [
+            'query' => [
+                'access_token' => $accessToken['access_token'],
+                'fields' => $fields
+            ]
+        ]);
+        $profile = json_decode($profileResponse->getBody(), true);
+
+        // If the user was already registerd, with log him
+        $user = User::where('facebook', '=', $profile['id'])->first();
+        if ($user)
+        {
+            return response()->json(['token' => $this->createToken($user)]);
+        }
+
+        // If the user was registered but not with facebook, we update her
+        $user = User::where('email', '=', $profile['email'])->first();
+        if ($user)
+        {
+            $user->facebook = $profile['id'];
+            $user->save();
+            return response()->json(['token' => $this->createToken($user)]);
+        }
+
+        // If the user is not registerd, we do that
+        $user = new User;
+        $user->facebook = $profile['id'];
+        $user->email = $profile['email'];
+        $user->name = $profile['name'];
+        $user->save();
         return response()->json(['token' => $this->createToken($user)]);
     }
 

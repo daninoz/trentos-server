@@ -1,6 +1,7 @@
 <?php
 
 $app->post('api/auth/login', 'AuthController@login');
+$app->post('api/auth/facebook', 'AuthController@facebook');
 $app->post('api/auth/register', 'AuthController@register');
 $app->get('api/sports', 'SportController@index');
 

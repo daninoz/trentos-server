@@ -125,6 +125,10 @@ class UserService
     {
         $user = $this->get($id);
 
+        if (!$user->sports) {
+            return [];
+        }
+
         $user->load(['sports.events' => function ($q) use ( &$events ) {
             $events = $q->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->get()->unique();
         }]);
