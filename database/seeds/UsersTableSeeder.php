@@ -11,6 +11,16 @@ class UsersTableSeeder extends Seeder
         //delete users table records
         DB::table('users')->delete();
         //insert some dummy records
+        DB::table('users')->insert([
+            'name' => 'Daniel Albornoz',
+            'email' => 'admin@admin.com',
+            'password' => app('hash')->make('abc123456'),
+            'is_admin' => 1,
+            'created_at' => $faker->dateTimeBetween($startDate = '-60 days',
+                $endDate = '-30 days', $timezone = date_default_timezone_get()),
+            'updated_at' => $faker->dateTimeBetween($startDate = '-29 days',
+                $endDate = '-15 days', $timezone = date_default_timezone_get()),
+        ]);
         for ($i = 0; $i < 10; $i++) {
             DB::table('users')->insert([
                 'name' => $faker->name,

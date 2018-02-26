@@ -14,6 +14,7 @@ $app->group(['prefix' => 'api', 'middleware' => 'auth', 'namespace' => 'App\Http
     $app->get('feed', 'MeController@getFeed');
 
     $app->post('events', 'EventController@store');
+    $app->get('events/today', 'EventController@getToday');
     $app->get('events/{id}', 'EventController@get');
     $app->put('events/{id}', 'EventController@update');
     $app->patch('events/{id}', 'EventController@highlight');

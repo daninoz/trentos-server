@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Sport;
+use Carbon\Carbon;
 
 class SportService
 {
@@ -119,6 +120,7 @@ class SportService
     {
         return $this->sport->findOrFail($id)->events()
             ->with('sport', 'user', 'comments', 'comments.user', 'likes')
+            ->where('datetime', '>=', Carbon::now())
             ->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->paginate(10);
     }
 }

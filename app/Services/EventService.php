@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Event;
+use Carbon\Carbon;
 
 class EventService
 {
@@ -43,7 +44,8 @@ class EventService
     public function getList()
     {
         return $this->event->with('sport', 'user', 'comments', 'comments.user', 'likes')
-            ->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->paginate(10);
+            ->where('datetime', '>=', Carbon::now())
+            ->orderBy('highlight', 'desc')->orderBy('datetime', 'asc')->paginate(10);
     }
 
     /**
@@ -59,6 +61,7 @@ class EventService
     {
         $rules = [
             'description' => ['required'],
+            'datetime' => ['required', 'date'],
             'sport_id' => ['required', 'exists:sports,id'],
         ];
 
@@ -80,6 +83,7 @@ class EventService
     {
         $event = [
             'description' => $input->description,
+            'datetime' => strtotime($input->datetime),
             'sport_id' => $input->sport_id,
             'user_id' => $input->user['sub']
         ];
@@ -106,6 +110,7 @@ class EventService
         $event = $this->event->findOrFail($id);
 
         $eventData = [
+            'datetime' => $input->datetime,
             'description' => $input->description,
             'sport_id' => $input->sport_id,
         ];
@@ -186,6 +191,21 @@ class EventService
             ->whereHas('sport', function ($q) use ($sports) {
                 $q->whereIn('id', $sports);
             })
-            ->orderBy('highlight', 'desc')->orderBy('created_at', 'desc')->paginate(10);
+            ->where('datetime', '>=', Carbon::now())
+            ->orderBy('highlight', 'desc')->orderBy('datetime', 'asc')->paginate(10);
+    }
+
+    public function getToday()
+    {
+        return $this->event->with('sport', 'user', 'comments', 'comments.user', 'likes')
+            ->whereDate('datetime', '=', Carbon::today()->toDateString())
+            ->orderBy('highlight', 'desc')->orderBy('datetime', 'asc')->paginate(10);
+    }
+
+    public function getPast()
+    {
+        return $this->event->with('sport', 'user', 'comments', 'comments.user', 'likes')
+            ->where('datetime', '<', Carbon::now())
+            ->orderBy('highlight', 'desc')->orderBy('datetime', 'desc')->paginate(10);
     }
 }
