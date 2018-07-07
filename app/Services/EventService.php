@@ -111,7 +111,7 @@ class EventService
         $event = $this->event->findOrFail($id);
 
         $eventData = [
-            'datetime' => $input->datetime,
+            'datetime' => strtotime($input->datetime),
             'description' => $input->description,
             'sport_id' => $input->sport_id,
         ];
