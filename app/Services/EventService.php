@@ -90,6 +90,7 @@ class EventService
 
         if ($input->location) {
             $event['location'] = $input->location;
+            $event['location_description'] = $input->location_description;
         }
 
         $event = $this->event->create($event);
@@ -117,6 +118,7 @@ class EventService
 
         if ($input->location) {
             $eventData['location'] = $input->location;
+            $eventData['location_description'] = $input->location_description;
         }
 
         $event->update($eventData);

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDate extends Migration
+class AddLocationDescription extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddDate extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dateTime('datetime')->after('description');
+            $table->text('location_description')->after('location');
         });
     }
 
@@ -25,7 +25,7 @@ class AddDate extends Migration
     public function down()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('datetime');
+            $table->dropColumn('location_description');
         });
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    protected $fillable = ['description', 'location', 'datetime', 'sport_id', 'user_id'];
+    protected $fillable = ['description', 'location', 'location_description', 'datetime', 'sport_id', 'user_id'];
 
     protected $hidden = ['updated_at', 'sport_id', 'user_id'];
 
